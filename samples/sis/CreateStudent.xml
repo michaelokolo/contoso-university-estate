@@ -1,0 +1,14 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sis="urn:contoso:sis:v1">
+  <soap:Body>
+    <sis:CreateStudentRequest>
+      <sis:Forename>Ada</sis:Forename>
+      <sis:Surname>Lovelace</sis:Surname>
+      <sis:DateOfBirth>10-DEC-2008</sis:DateOfBirth>
+      <sis:Email>ada.lovelace@example.com</sis:Email>
+      <sis:Postcode>DE22 1GB</sis:Postcode>
+      <sis:FeeStatus>H</sis:FeeStatus>
+      <sis:RouteCode>UG0401</sis:RouteCode>
+      <sis:EntryYear>2027</sis:EntryYear>
+    </sis:CreateStudentRequest>
+  </soap:Body>
+</soap:Envelope>

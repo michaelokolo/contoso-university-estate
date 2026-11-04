@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Contoso University Student Record System (SIS) - StudentService v1
+  SOAP 1.1, document/literal. Dates are DD-MON-YYYY (e.g. 04-NOV-2026).
+-->
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tns="urn:contoso:sis:v1"
+                  targetNamespace="urn:contoso:sis:v1"
+                  name="StudentService">
+
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:contoso:sis:v1" elementFormDefault="qualified">
+
+      <xsd:complexType name="Student">
+        <xsd:sequence>
+          <xsd:element name="StudentCode" type="xsd:string"/>
+          <xsd:element name="Surname" type="xsd:string"/>
+          <xsd:element name="Forename" type="xsd:string"/>
+          <xsd:element name="DateOfBirth" type="xsd:string"/>
+          <xsd:element name="Email" type="xsd:string"/>
+          <xsd:element name="Postcode" type="xsd:string"/>
+          <xsd:element name="FeeStatus" type="xsd:string"/>
+          <xsd:element name="RouteCode" type="xsd:string"/>
+          <xsd:element name="EntryYear" type="xsd:int"/>
+          <xsd:element name="YearOfStudy" type="xsd:int"/>
+          <xsd:element name="Status" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="Route">
+        <xsd:sequence>
+          <xsd:element name="RouteCode" type="xsd:string"/>
+          <xsd:element name="RouteName" type="xsd:string"/>
+          <xsd:element name="Level" type="xsd:string"/>
+          <xsd:element name="Status" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:element name="GetStudentRequest">
+        <xsd:complexType><xsd:sequence>
+          <xsd:element name="StudentCode" type="xsd:string"/>
+        </xsd:sequence></xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetStudentResponse">
+        <xsd:complexType><xsd:sequence>
+          <xsd:element name="Student" type="tns:Student"/>
+        </xsd:sequence></xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="FindStudentsRequest">
+        <xsd:complexType><xsd:sequence>
+          <xsd:element name="Surname" type="xsd:string"/>
+          <xsd:element name="DateOfBirth" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence></xsd:complexType>
+      </xsd:element>
+      <xsd:element name="FindStudentsResponse">
+        <xsd:complexType><xsd:sequence>
+          <xsd:element name="Student" type="tns:Student" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence></xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="ListRoutesRequest">
+        <xsd:complexType><xsd:sequence/></xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ListRoutesResponse">
+        <xsd:complexType><xsd:sequence>
+          <xsd:element name="Route" type="tns:Route" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence></xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="CreateStudentRequest">
+        <xsd:complexType><xsd:sequence>
+          <xsd:element name="Forename" type="xsd:string"/>
+          <xsd:element name="Surname" type="xsd:string"/>
+          <xsd:element name="DateOfBirth" type="xsd:string"/>
+          <xsd:element name="Email" type="xsd:string"/>
+          <xsd:element name="Postcode" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="FeeStatus" type="xsd:string"/>
+          <xsd:element name="RouteCode" type="xsd:string"/>
+          <xsd:element name="EntryYear" type="xsd:int"/>
+        </xsd:sequence></xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CreateStudentResponse">
+        <xsd:complexType><xsd:sequence>
+          <xsd:element name="StudentCode" type="xsd:string"/>
+        </xsd:sequence></xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="UpdateStudentStatusRequest">
+        <xsd:complexType><xsd:sequence>
+          <xsd:element name="StudentCode" type="xsd:string"/>
+          <xsd:element name="Status" type="xsd:string"/>
+        </xsd:sequence></xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateStudentStatusResponse">
+        <xsd:complexType><xsd:sequence>
+          <xsd:element name="Result" type="xsd:string"/>
+        </xsd:sequence></xsd:complexType>
+      </xsd:element>
+
+    </xsd:schema>
+  </wsdl:types>
+
+  <wsdl:message name="GetStudentIn"><wsdl:part name="parameters" element="tns:GetStudentRequest"/></wsdl:message>
+  <wsdl:message name="GetStudentOut"><wsdl:part name="parameters" element="tns:GetStudentResponse"/></wsdl:message>
+  <wsdl:message name="FindStudentsIn"><wsdl:part name="parameters" element="tns:FindStudentsRequest"/></wsdl:message>
+  <wsdl:message name="FindStudentsOut"><wsdl:part name="parameters" element="tns:FindStudentsResponse"/></wsdl:message>
+  <wsdl:message name="ListRoutesIn"><wsdl:part name="parameters" element="tns:ListRoutesRequest"/></wsdl:message>
+  <wsdl:message name="ListRoutesOut"><wsdl:part name="parameters" element="tns:ListRoutesResponse"/></wsdl:message>
+  <wsdl:message name="CreateStudentIn"><wsdl:part name="parameters" element="tns:CreateStudentRequest"/></wsdl:message>
+  <wsdl:message name="CreateStudentOut"><wsdl:part name="parameters" element="tns:CreateStudentResponse"/></wsdl:message>
+  <wsdl:message name="UpdateStudentStatusIn"><wsdl:part name="parameters" element="tns:UpdateStudentStatusRequest"/></wsdl:message>
+  <wsdl:message name="UpdateStudentStatusOut"><wsdl:part name="parameters" element="tns:UpdateStudentStatusResponse"/></wsdl:message>
+
+  <wsdl:portType name="StudentServicePortType">
+    <wsdl:operation name="GetStudent"><wsdl:input message="tns:GetStudentIn"/><wsdl:output message="tns:GetStudentOut"/></wsdl:operation>
+    <wsdl:operation name="FindStudents"><wsdl:input message="tns:FindStudentsIn"/><wsdl:output message="tns:FindStudentsOut"/></wsdl:operation>
+    <wsdl:operation name="ListRoutes"><wsdl:input message="tns:ListRoutesIn"/><wsdl:output message="tns:ListRoutesOut"/></wsdl:operation>
+    <wsdl:operation name="CreateStudent"><wsdl:input message="tns:CreateStudentIn"/><wsdl:output message="tns:CreateStudentOut"/></wsdl:operation>
+    <wsdl:operation name="UpdateStudentStatus"><wsdl:input message="tns:UpdateStudentStatusIn"/><wsdl:output message="tns:UpdateStudentStatusOut"/></wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="StudentServiceBinding" type="tns:StudentServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetStudent"><soap:operation soapAction="urn:contoso:sis:v1/GetStudent"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation>
+    <wsdl:operation name="FindStudents"><soap:operation soapAction="urn:contoso:sis:v1/FindStudents"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation>
+    <wsdl:operation name="ListRoutes"><soap:operation soapAction="urn:contoso:sis:v1/ListRoutes"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation>
+    <wsdl:operation name="CreateStudent"><soap:operation soapAction="urn:contoso:sis:v1/CreateStudent"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation>
+    <wsdl:operation name="UpdateStudentStatus"><soap:operation soapAction="urn:contoso:sis:v1/UpdateStudentStatus"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="StudentService">
+    <wsdl:port name="StudentServicePort" binding="tns:StudentServiceBinding">
+      <soap:address location="__PUBLIC_URL__/sis/StudentService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

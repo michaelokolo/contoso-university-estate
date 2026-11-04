@@ -1,0 +1,7 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sis="urn:contoso:sis:v1">
+  <soap:Body>
+    <sis:GetStudentRequest>
+      <sis:StudentCode>10020005</sis:StudentCode>
+    </sis:GetStudentRequest>
+  </soap:Body>
+</soap:Envelope>

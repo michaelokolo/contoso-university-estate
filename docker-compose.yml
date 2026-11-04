@@ -1,0 +1,66 @@
+# Contoso University "on-premises" zone. Runs on your laptop.
+#   docker compose up -d --build      start everything
+#   docker compose logs -f sis        follow one service's logs
+#   docker compose down               stop (data is kept)
+#   docker compose down -v            stop and DELETE the data (re-seeds on next start)
+name: contoso-onprem
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+      - ./systems/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5433:5432"   # 5433 on your Mac, so it never clashes with a local Postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 10
+    mem_limit: 256m
+
+  sis:
+    build:
+      context: ./systems
+      dockerfile: sis/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/sis
+      SIS_USER: ${SIS_USER}
+      SIS_PASSWORD: ${SIS_PASSWORD}
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+      PUBLIC_URL: http://localhost:8081
+      SEED_DIR: /seed
+    volumes:
+      - ./output:/seed:ro
+    ports:
+      - "8081:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    mem_limit: 192m
+
+  finance:
+    build:
+      context: ./systems
+      dockerfile: finance/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/finance
+      FINANCE_API_KEY: ${FINANCE_API_KEY}
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+      SEED_DIR: /seed
+      DROPZONE: /dropzone
+      EXPORT_TIME_UTC: "02:00"
+    volumes:
+      - ./output:/seed:ro
+      - ./dropzone:/dropzone
+    ports:
+      - "8082:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    mem_limit: 192m
+
+volumes:
+  dbdata:
