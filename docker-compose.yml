@@ -62,5 +62,54 @@ services:
         condition: service_healthy
     mem_limit: 192m
 
+  # ---------------------------------------------------------------------
+  # Vendor SaaS systems: normally on Azure Container Apps (deploy/deploy-vendors.sh).
+  # Run them locally instead with:  docker compose --profile vendors up -d --build
+  # They send webhooks to the local receiver: python tools/webhook_receiver.py
+  # ---------------------------------------------------------------------
+  portal:
+    profiles: [vendors]
+    build: { context: ., dockerfile: systems/portal/Dockerfile }
+    environment:
+      PORTAL_API_KEY: ${PORTAL_API_KEY}
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+      WEBHOOK_URL: http://host.docker.internal:9000/webhooks
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET}
+    ports: ["8083:8000"]
+    mem_limit: 128m
+
+  ucas:
+    profiles: [vendors]
+    build: { context: ., dockerfile: systems/ucas/Dockerfile }
+    environment:
+      UCAS_PROVIDER_KEY: ${UCAS_PROVIDER_KEY}
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+    ports: ["8084:8000"]
+    mem_limit: 128m
+
+  payments:
+    profiles: [vendors]
+    build: { context: ., dockerfile: systems/payments/Dockerfile }
+    environment:
+      PAYMENTS_SECRET_KEY: ${PAYMENTS_SECRET_KEY}
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+      WEBHOOK_URL: http://host.docker.internal:9000/webhooks
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET}
+      PUBLIC_URL: http://localhost:8085
+    ports: ["8085:8000"]
+    mem_limit: 128m
+
+  events:
+    profiles: [vendors]
+    build: { context: ., dockerfile: systems/events/Dockerfile }
+    environment:
+      EVENTS_CLIENT_ID: contoso-university
+      EVENTS_CLIENT_SECRET: ${EVENTS_CLIENT_SECRET}
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+      WEBHOOK_URL: http://host.docker.internal:9000/webhooks
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET}
+    ports: ["8086:8000"]
+    mem_limit: 128m
+
 volumes:
   dbdata:

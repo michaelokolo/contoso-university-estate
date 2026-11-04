@@ -14,14 +14,15 @@ Ten systems in three zones, the way a real university is split:
 | 2 | Virtual learning environment | "On premises" (laptop) | Moodle | Planned |
 | 3 | Student record system (SIS) | "On premises" (laptop) | SITS / PeopleSoft, SOAP API | **Running** (Day 2) |
 | 4 | Microsoft 365 | Microsoft cloud | Outlook, Teams, SharePoint via Graph | Planned |
-| 5 | Admissions feed | Vendor SaaS (Azure) | UCAS daily XML transactions | **Data ready** |
-| 6 | Application portal | Vendor SaaS (Azure) | Online application form | **Data ready** |
+| 5 | Admissions feed | Vendor SaaS (Azure) | UCAS daily XML transactions | **Ready** (Day 3) |
+| 6 | Application portal | Vendor SaaS (Azure) | Online application form | **Ready** (Day 3) |
 | 7 | Finance / ERP | "On premises" (laptop) | Unit4 / Agresso | **Running** (Day 2) |
-| 8 | Payment provider | Vendor SaaS (Azure) | Flywire / WPM, signed webhooks | Planned |
-| 9 | Events platform | Vendor SaaS (Azure) | Open days, signed webhooks | Planned |
+| 8 | Payment provider | Vendor SaaS (Azure) | Flywire / WPM, signed webhooks | **Ready** (Day 3) |
+| 9 | Events platform | Vendor SaaS (Azure) | Open days, signed webhooks | **Ready** (Day 3) |
 | 10 | Identity | Microsoft cloud | Entra ID | Planned |
 
 Run the on-premises systems: [docs/day2-on-prem-systems.md](docs/day2-on-prem-systems.md).
+Run and deploy the vendor systems: [docs/day3-vendor-systems.md](docs/day3-vendor-systems.md).
 
 See [docs/architecture.md](docs/architecture.md) for who owns which data, how IDs differ between systems, and the known data problems.
 

@@ -6,3 +6,4 @@ __pycache__/
 .env
 local.settings.json
 dropzone/
+deploy/.vendors.env

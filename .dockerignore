@@ -1,0 +1,15 @@
+# Keeps vendor image builds small (they use the repo root as build context)
+.git
+**/.venv
+**/__pycache__
+.env
+deploy/.vendors.env
+dropzone
+output/_truth
+output/sis
+output/finance
+output/reference
+data-generator
+docs
+samples
+tools
