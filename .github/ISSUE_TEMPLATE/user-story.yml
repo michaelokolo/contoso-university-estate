@@ -1,0 +1,26 @@
+name: User story
+description: A piece of work that delivers value
+title: "CU-: "
+labels: ["story"]
+body:
+  - type: textarea
+    id: story
+    attributes:
+      label: Story
+      value: "As a …\nI want …\nso that …"
+    validations: { required: true }
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: "- [ ] Given … when … then …\n- [ ] "
+    validations: { required: true }
+  - type: dropdown
+    id: points
+    attributes:
+      label: Story points
+      options: ["1", "2", "3", "5", "8"]
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes, dependencies, risks

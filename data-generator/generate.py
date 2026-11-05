@@ -19,10 +19,9 @@ from pathlib import Path
 from faker import Faker
 
 from contoso import mess
-from contoso.people import Application, PeopleFactory
+from contoso.people import PeopleFactory
 from contoso.reference import FEES, academic_periods, build_programmes
-from contoso.writers import (write_finance, write_portal, write_reference, write_sis, write_truth,
-                             write_ucas)
+from contoso.writers import write_finance, write_portal, write_reference, write_sis, write_truth, write_ucas
 
 # Key dates in the 2027-entry cycle (illustrative)
 CYCLE_OPENS = datetime(2026, 9, 2)

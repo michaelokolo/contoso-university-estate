@@ -1,0 +1,315 @@
+{
+  "labels": [
+    {
+      "name": "story",
+      "color": "1D76DB",
+      "description": "User story"
+    },
+    {
+      "name": "epic",
+      "color": "5319E7",
+      "description": "Large body of work, split into stories"
+    },
+    {
+      "name": "incident",
+      "color": "B60205",
+      "description": "Something broken now"
+    },
+    {
+      "name": "problem",
+      "color": "D93F0B",
+      "description": "Root cause needing lasting work"
+    },
+    {
+      "name": "chore",
+      "color": "C5DEF5",
+      "description": "Tooling, CI, housekeeping"
+    },
+    {
+      "name": "python",
+      "color": "3572A5",
+      "description": "Component written in Python"
+    },
+    {
+      "name": "csharp",
+      "color": "178600",
+      "description": "Component written in C#"
+    },
+    {
+      "name": "infra",
+      "color": "FBCA04",
+      "description": "Terraform / Azure infrastructure"
+    }
+  ],
+  "milestones": [
+    {
+      "title": "Sprint 0",
+      "due_on": "2026-11-15T23:00:00Z",
+      "description": "Finish the estate and set up the way of working"
+    },
+    {
+      "title": "Sprint 1",
+      "due_on": "2026-11-22T23:00:00Z",
+      "description": "Applicant portal to CRM, end to end, through the full pipeline"
+    },
+    {
+      "title": "Later",
+      "due_on": "2027-01-31T23:00:00Z",
+      "description": "Refined and pulled into a sprint when it's near the top of the backlog"
+    }
+  ],
+  "issues": [
+    {
+      "id": "CU-1",
+      "milestone": "Sprint 0",
+      "labels": [
+        "epic"
+      ],
+      "title": "Epic: Estate and ways of working",
+      "body": "Finish the ten Contoso systems and set up how the team works: board, branch protection, CI, Terraform state, OIDC.\n\nStories: CU-2 to CU-8."
+    },
+    {
+      "id": "CU-2",
+      "milestone": "Sprint 0",
+      "labels": [
+        "story",
+        "chore"
+      ],
+      "points": 2,
+      "title": "Protect main and run CI on every pull request",
+      "story": "As an integration engineer\nI want every change to go through a pull request with automated checks\nso that main is always deployable and nothing is merged untested.",
+      "acceptance": [
+        "Branch protection on `main`: pull request required, CI check required, no direct pushes",
+        "CI workflow runs lint and unit tests on every pull request",
+        "A deliberately failing test blocks the merge (prove it once, then fix it)",
+        "PR template appears when opening a pull request"
+      ]
+    },
+    {
+      "id": "CU-3",
+      "milestone": "Sprint 0",
+      "labels": [
+        "story",
+        "infra"
+      ],
+      "points": 2,
+      "title": "Bootstrap Terraform remote state in Azure Storage",
+      "story": "As an integration engineer\nI want Terraform state stored centrally with locking\nso that pipelines and I always work from the same, safe state.",
+      "acceptance": [
+        "Storage account and `tfstate` container exist in `rg-contoso-tfstate`",
+        "Public blob access disabled; versioning and soft delete on",
+        "Access by Entra ID (no storage keys in pipelines)",
+        "State key per environment: `dev.tfstate`, `test.tfstate`, `prod.tfstate`"
+      ]
+    },
+    {
+      "id": "CU-4",
+      "milestone": "Sprint 0",
+      "labels": [
+        "story",
+        "infra"
+      ],
+      "points": 3,
+      "title": "GitHub Actions signs in to Azure with OIDC (no stored secrets)",
+      "story": "As an integration engineer\nI want pipelines to authenticate to Azure with short-lived OIDC tokens\nso that no Azure passwords or keys are stored in GitHub.",
+      "acceptance": [
+        "Entra app registration with federated credentials for the `dev`, `test` and `prod` GitHub environments and for pull requests",
+        "GitHub environments `dev`, `test`, `prod` exist; `prod` has a required reviewer",
+        "A workflow run on `dev` can run `az account show` successfully",
+        "No client secret exists on the app registration"
+      ]
+    },
+    {
+      "id": "CU-5",
+      "milestone": "Sprint 0",
+      "labels": [
+        "story"
+      ],
+      "points": 5,
+      "title": "CRM: Dataverse with the Education Accelerator, loaded with programmes and applicants",
+      "story": "As admissions\nI want a CRM holding our programmes and applicants\nso that recruitment can track every applicant in one place.",
+      "acceptance": [
+        "Free test Microsoft tenant and a Power Apps Developer environment exist (not the Derby tenant)",
+        "Education Accelerator installed",
+        "Programmes loaded from `reference/code_map.csv` with their CRM codes",
+        "A sample of applicants loaded with `applicationId` as an alternate key",
+        "Three retired programmes still open in the CRM (the deliberate drift)"
+      ]
+    },
+    {
+      "id": "CU-6",
+      "milestone": "Sprint 0",
+      "labels": [
+        "story"
+      ],
+      "points": 3,
+      "title": "Moodle running locally with courses for each programme",
+      "story": "As a student\nI want my modules to appear in Moodle when I enrol\nso that I can start learning on day one.",
+      "acceptance": [
+        "Moodle runs in Docker on the laptop (on its own, to save memory)",
+        "Web services enabled with a token for an integration user",
+        "A course exists per programme (or a sample of programmes)",
+        "`core_user_create_users` and `enrol_manual_enrol_users` can be called with the token"
+      ]
+    },
+    {
+      "id": "CU-7",
+      "milestone": "Sprint 0",
+      "labels": [
+        "story"
+      ],
+      "points": 3,
+      "title": "Identity and Microsoft 365 in the test tenant",
+      "story": "As the integration platform\nI want an identity for each integration and access to Microsoft 365\nso that we can send applicants emails and alert admissions in Teams.",
+      "acceptance": [
+        "Admissions mailbox and a Teams team with an Admissions channel exist (or the closest option available in the tenant)",
+        "App registration for Graph with only the permissions needed (least privilege)",
+        "A test email can be sent through Graph",
+        "Notes on what is real and what is simulated if Microsoft 365 isn't available"
+      ]
+    },
+    {
+      "id": "CU-8",
+      "milestone": "Sprint 0",
+      "labels": [
+        "story",
+        "chore"
+      ],
+      "points": 1,
+      "title": "Sprint 0 review and retrospective",
+      "story": "As the team\nI want to review what we built and how we worked\nso that Sprint 1 starts from a clear, agreed plan.",
+      "acceptance": [
+        "Demo: every estate system reachable and seeded",
+        "Retro entry written in `backlog/retros.md`",
+        "Sprint 1 stories refined and estimated"
+      ]
+    },
+    {
+      "id": "CU-9",
+      "milestone": "Sprint 1",
+      "labels": [
+        "epic"
+      ],
+      "title": "Epic: Applicant portal to CRM",
+      "body": "Every application submitted on the portal appears in the CRM within a minute, exactly once, even if the CRM is down for hours.\n\nStories: CU-10 to CU-15."
+    },
+    {
+      "id": "CU-10",
+      "milestone": "Sprint 1",
+      "labels": [
+        "story",
+        "infra"
+      ],
+      "points": 3,
+      "title": "Replace the vendor deployment script with Terraform",
+      "story": "As an integration engineer\nI want the vendor systems defined in Terraform\nso that every environment is repeatable and reviewed as code.",
+      "acceptance": [
+        "Terraform module for a container app; vendors deployed from it",
+        "`terraform plan` shows no changes after import or recreate",
+        "`deploy/deploy-vendors.sh` retired"
+      ]
+    },
+    {
+      "id": "CU-11",
+      "milestone": "Sprint 1",
+      "labels": [
+        "story",
+        "python"
+      ],
+      "points": 5,
+      "title": "Receive portal webhooks and queue them (Python Function)",
+      "story": "As admissions\nI want every submitted application captured immediately\nso that none are lost, even when the CRM is unavailable.",
+      "acceptance": [
+        "HTTP-triggered Python Function verifies the webhook signature and rejects invalid or old ones",
+        "Valid events are put on a Service Bus queue and the Function returns 200 within 1 second",
+        "Duplicate events (same event ID) are not queued twice",
+        "Unit tests for signature verification"
+      ]
+    },
+    {
+      "id": "CU-12",
+      "milestone": "Sprint 1",
+      "labels": [
+        "story",
+        "csharp"
+      ],
+      "points": 8,
+      "title": "Upsert applicants into the CRM (C# worker)",
+      "story": "As admissions\nI want each application to create or update one CRM record\nso that we never see duplicate applicants.",
+      "acceptance": [
+        "C# Function triggered by the Service Bus queue fetches the full application from the portal API",
+        "Upserts into Dataverse using `applicationId` as the alternate key",
+        "Handles Dataverse 429 throttling with Retry-After",
+        "Permanent failures go to the dead-letter queue with a reason",
+        "Unit tests for the mapping"
+      ]
+    },
+    {
+      "id": "CU-13",
+      "milestone": "Sprint 1",
+      "labels": [
+        "story",
+        "chore"
+      ],
+      "points": 5,
+      "title": "CD pipeline: dev on merge, ephemeral test and approved prod on release",
+      "story": "As an integration engineer\nI want deployments to be automatic and gated\nso that only tested changes reach production.",
+      "acceptance": [
+        "Merge to `main` deploys to dev",
+        "A `v*` tag creates a test environment, runs integration tests, destroys it",
+        "Prod deploy waits for approval in the `prod` environment",
+        "The same build artefact is deployed to every environment"
+      ]
+    },
+    {
+      "id": "CU-14",
+      "milestone": "Sprint 1",
+      "labels": [
+        "story"
+      ],
+      "points": 3,
+      "title": "Trace one application end to end",
+      "story": "As support\nI want to follow one application through every component\nso that I can find where it failed in minutes.",
+      "acceptance": [
+        "Application Insights connected to both Functions",
+        "A correlation ID from the webhook carried through Service Bus to the CRM write",
+        "A saved KQL query shows one application's journey",
+        "An alert fires when the dead-letter queue is not empty"
+      ]
+    },
+    {
+      "id": "CU-15",
+      "milestone": "Sprint 1",
+      "labels": [
+        "story",
+        "chore"
+      ],
+      "points": 1,
+      "title": "Sprint 1 review, retrospective and STAR stories",
+      "story": "As the team\nI want to review, improve and capture what we learned\nso that it becomes interview evidence.",
+      "acceptance": [
+        "Demo of an application flowing portal to CRM",
+        "Retro entry written",
+        "STAR stories written for every incident handled this sprint"
+      ]
+    },
+    {
+      "id": "CU-16",
+      "milestone": "Later",
+      "labels": [
+        "story",
+        "infra"
+      ],
+      "points": 5,
+      "title": "Nightly finance export into Azure SQL with Data Factory",
+      "story": "As finance and admissions\nI want last night's finance export loaded into the integration database every morning\nso that fee balances can be checked against students without anyone handling files.",
+      "acceptance": [
+        "The finance export (Windows-1252 CSV) is uploaded to a Blob container each night",
+        "A Data Factory pipeline copies it into a staging table in Azure SQL, decoding Windows-1252 and UK dates correctly",
+        "A stored procedure merges staging into the main table (upsert) and records row counts",
+        "A schedule trigger runs it nightly; a failed run raises an alert",
+        "Data Factory defined in Terraform; pipeline JSON in Git"
+      ]
+    }
+  ]
+}

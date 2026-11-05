@@ -96,7 +96,7 @@ async def create(body: dict, authorization: str | None = Header(default=None)):
     try:
         amount = Decimal(str(body["amount"])).quantize(Decimal("0.01"))
     except InvalidOperation:
-        raise HTTPException(400, detail="amount must be a decimal string, e.g. \"500.00\"")
+        raise HTTPException(400, detail="amount must be a decimal string, e.g. \"500.00\"") from None
     if amount <= 0:
         raise HTTPException(400, detail="amount must be greater than zero")
     pr_id = f"pr_{uuid.uuid4().hex[:16]}"

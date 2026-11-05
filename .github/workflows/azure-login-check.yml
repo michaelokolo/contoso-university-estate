@@ -1,0 +1,26 @@
+# CU-4 acceptance test: proves GitHub can sign in to Azure with OIDC, with no stored secret.
+# Run it from GitHub > Actions > "Azure login check" > Run workflow.
+name: Azure login check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write   # lets the job request an OIDC token from GitHub
+  contents: read
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Sign in to Azure with OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Show who we are
+        run: |
+          az account show --query "{subscription:name, tenant:tenantId, user:user.name}" -o table

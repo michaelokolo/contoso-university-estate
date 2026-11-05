@@ -24,6 +24,8 @@ Ten systems in three zones, the way a real university is split:
 Run the on-premises systems: [docs/day2-on-prem-systems.md](docs/day2-on-prem-systems.md).
 Run and deploy the vendor systems: [docs/day3-vendor-systems.md](docs/day3-vendor-systems.md).
 
+**How we work** (Agile, branching, CI/CD, environments): [docs/ways-of-working.md](docs/ways-of-working.md) · **Sprint 0, start here:** [docs/sprint-0.md](docs/sprint-0.md) · Decisions: [docs/adr/](docs/adr/)
+
 See [docs/architecture.md](docs/architecture.md) for who owns which data, how IDs differ between systems, and the known data problems.
 
 ## Quick start: generate the data

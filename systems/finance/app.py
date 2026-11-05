@@ -69,7 +69,7 @@ def parse_money(value) -> Decimal:
     try:
         return Decimal(str(value).replace(",", "")).quantize(Decimal("0.01"))
     except InvalidOperation:
-        raise HTTPException(400, detail={"ErrorCode": "INVALID_AMOUNT", "Message": f"'{value}' is not a valid amount"})
+        raise HTTPException(400, detail={"ErrorCode": "INVALID_AMOUNT", "Message": f"'{value}' is not a valid amount"}) from None
 
 
 # --------------------------------------------------------------------------
@@ -265,9 +265,11 @@ def list_invoices(customerNo: str | None = None, status: str | None = None, x_ap
     require_key(x_api_key)
     clauses, params = [], []
     if customerNo:
-        clauses.append("i.customer_no = %s"); params.append(customerNo)
+        clauses.append("i.customer_no = %s")
+        params.append(customerNo)
     if status:
-        clauses.append("i.status = %s"); params.append(status)
+        clauses.append("i.status = %s")
+        params.append(status)
     where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
     with connect() as conn:
         rows = conn.execute(f"""

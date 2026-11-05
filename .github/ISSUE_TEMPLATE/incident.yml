@@ -1,0 +1,27 @@
+name: Incident
+description: Something is broken now
+title: "INC: "
+labels: ["incident"]
+body:
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options: ["S1 - service down, many users affected", "S2 - major feature broken", "S3 - degraded, workaround exists", "S4 - minor"]
+    validations: { required: true }
+  - type: textarea
+    id: symptom
+    attributes:
+      label: What users are seeing
+      description: Symptoms only, in the business's words
+    validations: { required: true }
+  - type: textarea
+    id: timeline
+    attributes:
+      label: Timeline
+      value: "- HH:MM reported\n- HH:MM investigating\n- HH:MM mitigated\n- HH:MM resolved"
+  - type: textarea
+    id: review
+    attributes:
+      label: Post-incident review (fill in when closing)
+      value: "Impact:\nRoot cause:\nHow it was found (tools, queries):\nFix:\nPrevention:\nSTAR story written: yes / no"

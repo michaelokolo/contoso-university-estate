@@ -1,0 +1,16 @@
+# Shared tooling settings for the whole repo
+[tool.ruff]
+line-length = 130
+target-version = "py312"
+extend-exclude = [".venv", "output", "dropzone"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501", "B008", "UP017"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff.lint.isort]
+known-first-party = ["common", "contoso"]

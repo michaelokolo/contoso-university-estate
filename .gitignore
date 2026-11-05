@@ -7,3 +7,5 @@ __pycache__/
 local.settings.json
 dropzone/
 deploy/.vendors.env
+.pytest_cache/
+.ruff_cache/

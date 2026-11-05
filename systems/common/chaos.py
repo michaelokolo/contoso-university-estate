@@ -18,9 +18,9 @@ import os
 import random
 import time
 from collections import deque
+from collections.abc import Callable
 from dataclasses import asdict, dataclass, field, fields
 from datetime import datetime, timezone
-from typing import Callable
 
 from fastapi import APIRouter, Header, HTTPException, Request
 from fastapi.responses import Response
