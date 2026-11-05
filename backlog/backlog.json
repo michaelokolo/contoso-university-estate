@@ -310,6 +310,53 @@
         "A schedule trigger runs it nightly; a failed run raises an alert",
         "Data Factory defined in Terraform; pipeline JSON in Git"
       ]
+    },
+    {
+      "id": "CU-17",
+      "milestone": "Later",
+      "labels": [
+        "story",
+        "infra"
+      ],
+      "points": 5,
+      "title": "Reach the on-premises SIS from Azure only through the APIM self-hosted gateway",
+      "story": "As the university's security team\nI want the student record system reachable from Azure without opening our firewall\nso that on-premises systems stay off the public internet.",
+      "acceptance": [
+        "APIM self-hosted gateway runs in Docker on the laptop and connects outwards to APIM",
+        "The SIS SOAP service is published in APIM (imported from its WSDL) and called through the gateway",
+        "The SIS port is not exposed to the internet",
+        "Gateway health and request logs visible in Azure"
+      ]
+    },
+    {
+      "id": "CU-18",
+      "milestone": "Later",
+      "labels": [
+        "story"
+      ],
+      "points": 3,
+      "title": "Read-only reporting views on the SIS database",
+      "story": "As the integration team\nI want read-only reporting views agreed with the student records team\nso that bulk reads don't go through slow one-at-a-time SOAP calls.",
+      "acceptance": [
+        "Views for current students and routes, with a read-only database user",
+        "The integration user cannot read the base tables or write anything",
+        "Documented as an agreed interface, like a real system team would provide"
+      ]
+    },
+    {
+      "id": "CU-19",
+      "milestone": "Later",
+      "labels": [
+        "story"
+      ],
+      "points": 5,
+      "title": "Optional: move the SIS database to Oracle Database Free",
+      "story": "As an integration engineer\nI want the SIS on Oracle, like most real student record systems\nso that I practise Oracle SQL and connectivity.",
+      "acceptance": [
+        "Oracle Free runs in Docker (alone, for memory)",
+        "SIS seeds and runs against Oracle",
+        "Notes on the differences from PostgreSQL met along the way"
+      ]
     }
   ]
 }
