@@ -33,6 +33,7 @@ read -r -p "Deploy to this subscription? [y/N] " ok
 [ "$ok" = "y" ] || [ "$ok" = "Y" ] || exit 1
 az extension add --name containerapp --upgrade --only-show-errors
 az provider register --namespace Microsoft.App --wait --only-show-errors
+az provider register --namespace Microsoft.ContainerRegistry --wait --only-show-errors
 az provider register --namespace Microsoft.OperationalInsights --wait --only-show-errors
 
 step "Secrets (generated once, then reused)"
