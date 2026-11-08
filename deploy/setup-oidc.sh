@@ -57,8 +57,13 @@ add_credential() {   # add_credential <name> <subject>
   }"
   echo "  $1 -> $2"
 }
-for env in dev test prod; do add_credential "env-$env" "repo:$REPO:environment:$env"; done
-add_credential "pull-requests" "repo:$REPO:pull_request"
+
+# GitHub's immutable subject format includes the owner and repo IDs (they never change, even on rename)
+OWNER_ID=$(gh api "repos/$REPO" --jq .owner.id)
+REPO_ID=$(gh api "repos/$REPO" --jq .id)
+SUBJECT="repo:${REPO%%/*}@${OWNER_ID}/${REPO#*/}@${REPO_ID}"
+for env in dev test prod; do add_credential "env-$env" "${SUBJECT}:environment:$env"; done
+add_credential "pull-requests" "${SUBJECT}:pull_request"
 
 echo "==> Azure role assignments"
 assign() {   # assign <role> <scope>
