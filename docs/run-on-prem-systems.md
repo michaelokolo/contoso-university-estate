@@ -1,4 +1,4 @@
-# Day 2: the "on-premises" systems
+# Running the on-premises systems
 
 Two systems that behave like the old, in-house systems a university runs in its own data centre.
 

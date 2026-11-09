@@ -1,61 +1,89 @@
 # Contoso University Estate
 
-A fictional university's systems, built to practise **real integration work**: realistic data, realistic flaws, and systems that behave like the ones universities actually run.
+[![CI](https://github.com/michaelokolo/contoso-university-estate/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelokolo/contoso-university-estate/actions/workflows/ci.yml)
 
-> Personal learning project. Contoso University is fictional. No real university code, data or architecture is used.
+Reference integration platform for **Contoso University**, a fictional UK university. It models a realistic higher education systems estate (student records, finance, admissions, payments, events, CRM and Microsoft 365) and the Azure integrations that connect them, delivered with infrastructure as code, CI/CD and multiple environments.
 
-## The estate
+The estate deliberately behaves like the real thing: legacy SOAP services, nightly file exports, signed webhooks, rate limits, maintenance windows and imperfect data, so the integration patterns shown here hold up against real-world conditions.
 
-Ten systems in three zones, the way a real university is split:
+> Contoso University is a fictional organisation. All data in this repository is generated.
 
-| # | System | Zone | Plays the part of | Status |
-| --- | --- | --- | --- | --- |
-| 1 | CRM | Microsoft cloud | Dynamics 365 / Dataverse + Education Accelerator | Planned |
-| 2 | Virtual learning environment | "On premises" (laptop) | Moodle | Planned |
-| 3 | Student record system (SIS) | "On premises" (laptop) | SITS / PeopleSoft, SOAP API | **Running** (Day 2) |
-| 4 | Microsoft 365 | Microsoft cloud | Outlook, Teams, SharePoint via Graph | Planned |
-| 5 | Admissions feed | Vendor SaaS (Azure) | UCAS daily XML transactions | **Ready** (Day 3) |
-| 6 | Application portal | Vendor SaaS (Azure) | Online application form | **Ready** (Day 3) |
-| 7 | Finance / ERP | "On premises" (laptop) | Unit4 / Agresso | **Running** (Day 2) |
-| 8 | Payment provider | Vendor SaaS (Azure) | Flywire / WPM, signed webhooks | **Ready** (Day 3) |
-| 9 | Events platform | Vendor SaaS (Azure) | Open days, signed webhooks | **Ready** (Day 3) |
-| 10 | Identity | Microsoft cloud | Entra ID | Planned |
+## Architecture
 
-Run the on-premises systems: [docs/day2-on-prem-systems.md](docs/day2-on-prem-systems.md).
-Run and deploy the vendor systems: [docs/day3-vendor-systems.md](docs/day3-vendor-systems.md).
+Ten systems across three zones:
 
-**How we work** (Agile, branching, CI/CD, environments): [docs/ways-of-working.md](docs/ways-of-working.md) · **Sprint 0, start here:** [docs/sprint-0.md](docs/sprint-0.md) · Decisions: [docs/adr/](docs/adr/) · **How the real systems work:** [docs/concepts.md](docs/concepts.md)
+| Zone | System | Interface |
+| --- | --- | --- |
+| **On premises** | Student record system (SIS) | SOAP 1.1 (WSDL), pipe-delimited extracts |
+| | Finance / ERP | REST (OpenAPI), nightly CSV export |
+| | Virtual learning environment | Moodle web services |
+| **Vendor SaaS** (Azure Container Apps) | Application portal | REST, cursor paging, signed webhooks |
+| | Admissions feed | Daily XML transactions |
+| | Payment provider | REST, signed webhooks |
+| | Events platform | OAuth 2.0 client credentials, signed webhooks |
+| **Microsoft cloud** | CRM | Dataverse |
+| | Microsoft 365 | Microsoft Graph |
+| | Identity | Microsoft Entra ID |
 
-See [docs/architecture.md](docs/architecture.md) for who owns which data, how IDs differ between systems, and the known data problems.
+Integrations run on Azure: API Management, Functions, Service Bus, Logic Apps, Data Factory, Key Vault and Application Insights. See [docs/architecture.md](docs/architecture.md) for data ownership, identifiers across systems and known data-quality issues.
 
-## Quick start: generate the data
+## Repository structure
+
+| Path | Contents |
+| --- | --- |
+| `data-generator/` | Generates the estate's seed data (reproducible with a fixed seed) |
+| `systems/` | The simulated systems and shared components (fault injection, webhooks) |
+| `deploy/` | Bootstrap and deployment scripts |
+| `infra/` | Terraform configuration and remote state settings |
+| `docs/` | Architecture, runbooks, concepts and architecture decision records |
+| `tests/` | Unit tests |
+
+## Getting started
+
+### Prerequisites
+
+- Python 3.12+
+- Docker Desktop
+- Azure CLI and an Azure subscription (for the vendor systems)
+- GitHub CLI
+
+### 1. Generate the data
 
 ```bash
 cd data-generator
 python3 -m venv .venv
-source .venv/bin/activate            # Windows: .venv\Scripts\Activate.ps1
+source .venv/bin/activate
 pip install -r requirements.txt
-python generate.py                   # full size, about 5 seconds
-python generate.py --applications 2000 --students 500   # small test run
+python generate.py
 ```
 
-Output lands in `output/` (ignored by Git; regenerate any time, the seed makes it repeatable):
+### 2. Run the on-premises systems
 
-| Folder | Format | What it is |
-| --- | --- | --- |
-| `reference/` | CSV | Faculties, programmes, **code map** between systems, academic periods, fees |
-| `ucas/` | XML, one file per day | UCAS-style APP (application) and RPL (reply) transactions |
-| `portal/` | JSON Lines | Direct and postgraduate applications from the portal |
-| `sis/` | Pipe-delimited text | Legacy student extract and route list |
-| `finance/` | CSV, **Windows-1252** | Customer and invoice export |
-| `_truth/` | JSON Lines | The answer key. **Integrations must never read this.** Use it only to check your work |
+```bash
+cp .env.example .env
+docker compose up -d --build
+```
 
-## Running it on an 8 GB Mac
+Student record system on `http://localhost:8081`, Finance on `http://localhost:8082`. See [docs/run-on-prem-systems.md](docs/run-on-prem-systems.md).
 
-Run only what you need. The light "on-premises" services (student records, finance, file drop) run together; Moodle runs on its own, with the others stopped.
+### 3. Run or deploy the vendor systems
 
-## Roadmap
+Locally: `docker compose --profile vendors up -d --build`. To Azure: `./deploy/deploy-vendors.sh`. See [docs/deploy-vendor-systems.md](docs/deploy-vendor-systems.md).
 
-1. **Week 1:** systems and data (this repo)
-2. **Week 2 onwards:** integrations between them on Azure (APIM, Functions, Service Bus, Event Grid, Logic Apps, Key Vault, App Insights)
-3. **Then:** troubleshooting tickets with planted faults, written up as STAR stories
+## Delivery
+
+- **Branching:** GitHub Flow. `main` is protected; every change goes through a pull request with passing checks.
+- **CI:** lint and unit tests on every pull request.
+- **CD:** build once, deploy the same artefact to dev, a short-lived test environment, then production after approval.
+- **Azure access:** OIDC workload identity federation. No stored credentials.
+- **Infrastructure:** Terraform with remote state in Azure Storage.
+
+See [docs/ways-of-working.md](docs/ways-of-working.md) and the [architecture decision records](docs/adr/).
+
+## Documentation
+
+- [Architecture](docs/architecture.md)
+- [Concepts: the real systems the estate models](docs/concepts.md)
+- [Running the on-premises systems](docs/run-on-prem-systems.md)
+- [Deploying the vendor systems](docs/deploy-vendor-systems.md)
+- [Ways of working](docs/ways-of-working.md)

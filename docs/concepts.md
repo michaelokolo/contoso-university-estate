@@ -1,6 +1,6 @@
 # How real university systems work, and how the estate copies them
 
-Short explanations of the real systems our fictional ones stand in for, and the real behaviour the estate copies, so every lesson transfers to a real job.
+Short explanations of the real systems our fictional ones stand in for, and the real behaviour the estate copies, so every pattern here applies to a real estate.
 
 ## Student record systems (SITS, PeopleSoft, Banner)
 
@@ -31,7 +31,7 @@ Short explanations of the real systems our fictional ones stand in for, and the 
 
 **Free edition.** *Oracle AI Database 26ai Free*: the full database with limits of 2 CPUs, 2 GB of RAM and 12 GB of data, no support or patches; available as a Docker image.
 
-**In the estate:** the SIS uses **PostgreSQL** (lighter for an 8 GB Mac; very similar SQL). Story CU-19 can swap it to Oracle Free later for Oracle/PL-SQL practice.
+**In the estate:** the SIS uses **PostgreSQL** (lighter to run locally; very similar SQL). Story CU-19 can swap it to Oracle Free later to support Oracle-specific integration work.
 
 ## Reaching "on-premises" systems from the cloud
 
@@ -45,7 +45,7 @@ Systems in a university's data centre aren't on the public internet. Azure servi
 | **Hybrid Connection Manager** | App Service, Functions (Hybrid Connections) | Windows machine inside the network |
 | VPN / ExpressRoute | Anything, network-level | Network infrastructure |
 
-**In the estate:** the laptop is the "data centre". Story CU-17 makes the SIS **reachable from Azure only through the APIM self-hosted gateway** running in Docker on the laptop, exactly as a university would expose SOAP services without opening its firewall. The Windows-only tools can't run on the Mac, so where a story would normally use them (Data Factory, CU-16) it uses an equally real alternative: **upload the file to Blob storage, then process it in the cloud**. In interviews, explain both.
+**In the estate:** the laptop is the "data centre". Story CU-17 makes the SIS **reachable from Azure only through the APIM self-hosted gateway** running in Docker on the laptop, exactly as a university would expose SOAP services without opening its firewall. The Windows-only tools can't run on the Mac, so where a story would normally use them (Data Factory, CU-16) it uses an equally real alternative: **upload the file to Blob storage, then process it in the cloud**.
 
 ## Azure Data Factory
 

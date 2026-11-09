@@ -285,12 +285,12 @@
         "chore"
       ],
       "points": 1,
-      "title": "Sprint 1 review, retrospective and STAR stories",
-      "story": "As the team\nI want to review, improve and capture what we learned\nso that it becomes interview evidence.",
+      "title": "Sprint 1 review and retrospective",
+      "story": "As the team\nI want to review, improve and capture what we learned\nso that the next sprint goes better.",
       "acceptance": [
         "Demo of an application flowing portal to CRM",
         "Retro entry written",
-        "STAR stories written for every incident handled this sprint"
+        "Post-incident review written for every incident handled this sprint"
       ]
     },
     {
