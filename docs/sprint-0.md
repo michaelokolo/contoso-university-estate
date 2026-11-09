@@ -24,7 +24,7 @@ Then on GitHub: your profile → **Projects** → **Contoso Integration Platform
 First push this sprint's changes (see the bottom of this page), so the CI workflow exists. Then on GitHub: repo → **Settings** → **Branches** → **Add branch ruleset** (or *Add classic branch protection rule*):
 
 - Branch name: `main`
-- ✅ Require a pull request before merging (approvals: 0, since you're the only engineer; Claude reviews in the PR conversation)
+- ✅ Require a pull request before merging (approvals: 0 while the team has one engineer)
 - ✅ Require status checks to pass → add **Lint and test (Python)** and **Validate Docker Compose**
 - ✅ Block force pushes
 
@@ -74,7 +74,7 @@ git switch -c feature/CU-12-short-name     # branch per story
 # ...work, commit with Conventional Commits: feat(crm): ..., fix(sis): ...
 git push -u origin HEAD
 gh pr create --fill                        # fill in the PR template
-# CI runs; ask Claude to review; merge with "Squash and merge"; delete the branch
+# CI runs; get a review; merge with "Squash and merge"; delete the branch
 ```
 
 Move the story's card across the board as you go: **Ready → In progress → In review → Done**.

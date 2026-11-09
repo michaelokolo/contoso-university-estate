@@ -24,4 +24,4 @@ body:
     id: review
     attributes:
       label: Post-incident review (fill in when closing)
-      value: "Impact:\nRoot cause:\nHow it was found (tools, queries):\nFix:\nPrevention:\nSTAR story written: yes / no"
+      value: "Impact:\nRoot cause:\nHow it was found (tools, queries):\nFix:\nPrevention:"

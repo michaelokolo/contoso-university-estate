@@ -1,4 +1,4 @@
-# Day 3: the vendor (SaaS) systems
+# The vendor (SaaS) systems
 
 Four external companies Contoso University buys services from. Each has its own API style, its own way of authenticating, and its own quirks, exactly like real vendors.
 
@@ -44,13 +44,13 @@ Azure portal → **Cost Management** → **Budgets** → **Add**:
 
 1. Scope: your subscription. Name: `contoso-estate`. Reset: Monthly. Amount: **£40**.
 2. Alert conditions: **Actual 50%** and **Actual 90%**, plus **Forecasted 100%**.
-3. Alert recipients: your personal email. **Create**.
+3. Alert recipients: your email. **Create**.
 
 ## Step 3: deploy to Azure (about 15 minutes)
 
 ```bash
 brew install azure-cli      # if you don't have it
-az login                    # your PERSONAL Azure account
+az login                    # the Azure account to deploy to
 ./deploy/deploy-vendors.sh
 ```
 
@@ -118,7 +118,7 @@ curl -s -H "Authorization: Bearer $TOKEN" "$EVENTS_URL/api/v2/events" | head -c 
 
 ## Chaos switches for vendors
 
-On top of the standard chaos panel (latency, errors, 429s, maintenance; see Day 2), vendors have these `extra` switches:
+On top of the standard chaos panel (latency, errors, 429s, maintenance; see [Running the on-premises systems](run-on-prem-systems.md)), vendors have these `extra` switches:
 
 | Switch | System | Effect |
 | --- | --- | --- |

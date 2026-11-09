@@ -1,16 +1,16 @@
 # Ways of working: the Contoso Integration product team
 
-We work the way a product-led integration team does. Every interview question about Agile, branching, CI/CD and infrastructure as code should be answerable from what we actually do here.
+The Contoso Integration team is a product-led team: it owns the integration platform for as long as it exists, ships small changes often, and supports what it runs. This page describes how the team works.
 
 ## The team
 
-| Role | Who | Responsibilities |
-| --- | --- | --- |
-| Integration engineer | Michael | Picks up stories, builds, tests, opens pull requests, deploys, supports what's live |
-| Product manager | Claude | Owns the backlog and priorities, writes stories with acceptance criteria, accepts work at the demo |
-| Delivery manager | Claude | Runs the sprint rhythm, tracks blockers and risks |
-| Reviewer | Claude | Reviews pull requests against the Definition of Done |
-| "The business" | Admissions, Finance, Student Records (played by Claude) | Raise requests and incidents |
+| Role | Responsibilities |
+| --- | --- |
+| Integration engineer | Picks up stories, builds, tests, opens pull requests, deploys, supports what's live |
+| Product manager | Owns the backlog and priorities, writes stories with acceptance criteria, accepts work at the demo |
+| Delivery manager | Runs the sprint rhythm, tracks blockers and risks |
+| Reviewer | Reviews pull requests against the Definition of Done |
+| The business | Admissions, Finance and Student Records raise requests and incidents |
 
 ## The product
 
@@ -25,7 +25,7 @@ We work the way a product-led integration team does. Every interview question ab
 | Weekend | **Sprint review (demo)** | Show the working integration; the product manager accepts or rejects each story | Stories moved to *Done* |
 | Weekend | **Retrospective** | What went well, what didn't, one improvement for next sprint | A short entry in `backlog/retros.md` |
 
-Capacity: about **6 hours of build time a week** (2 evenings + a weekend slot). Story points: 1, 2, 3, 5, 8. Anything bigger than 8 gets split.
+Capacity is agreed at sprint planning. Story points: 1, 2, 3, 5, 8. Anything bigger than 8 gets split.
 
 ## The board (GitHub Projects)
 
@@ -77,7 +77,7 @@ Azure sign-in uses **OIDC (federated credentials)**: GitHub gets a short-lived t
 | --- | --- | --- | --- |
 | `dev` | Always on (scales to zero) | Every merge to `main` | None |
 | `test` | **Created per release, destroyed after tests** | Release pipeline | None |
-| `prod` | Always on, smallest sizes | Release pipeline | **Required reviewer** (Michael) |
+| `prod` | Always on, smallest sizes | Release pipeline | **Required reviewer** |
 
 Configuration differs per environment through Terraform variable files (`dev.tfvars`, `test.tfvars`, `prod.tfvars`) and Key Vault, never through code changes.
 
@@ -86,8 +86,8 @@ Configuration differs per environment through Terraform variable files (`dev.tfv
 - An **incident** is something broken now ("applications aren't reaching the CRM"). Raise it with the *Incident* issue template, label `incident`, severity S1–S4.
 - Restore service first, then find the cause.
 - If the cause needs lasting work, open a **problem** linked to the incident.
-- Close every incident with a short **post-incident review**: timeline, impact, root cause, fix, prevention. **This becomes a STAR story.**
+- Close every incident with a short **post-incident review**: timeline, impact, root cause, fix, prevention.
 
 ## Architecture decisions
 
-Significant decisions are recorded as short **ADRs** in `docs/adr/`: the context, the decision, and the consequences. They're the written answer to "why did you choose X?" in an interview.
+Significant decisions are recorded as short **ADRs** in `docs/adr/`: the context, the decision, and the consequences.
