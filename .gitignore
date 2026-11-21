@@ -9,3 +9,10 @@ dropzone/
 deploy/.vendors.env
 .pytest_cache/
 .ruff_cache/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+crash.log
