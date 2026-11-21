@@ -28,3 +28,20 @@ resource "azurerm_container_registry" "vendors" {
   admin_enabled       = false
   tags                = local.tags
 }
+
+resource "azurerm_log_analytics_workspace" "vendors" {
+  name                = "log-contoso-vendors"
+  location            = azurerm_resource_group.vendors.location
+  resource_group_name = azurerm_resource_group.vendors.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+  tags                = local.tags
+}
+
+resource "azurerm_container_app_environment" "vendors" {
+  name                       = "cae-contoso-vendors"
+  location                   = azurerm_resource_group.vendors.location
+  resource_group_name        = azurerm_resource_group.vendors.name
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.vendors.id
+  tags                       = local.tags
+}
