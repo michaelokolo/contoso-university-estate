@@ -12,31 +12,31 @@ The estate deliberately behaves like the real thing: legacy SOAP services, night
 
 Ten systems across three zones:
 
-| Zone | System | Interface |
-| --- | --- | --- |
-| **On premises** | Student record system (SIS) | SOAP 1.1 (WSDL), pipe-delimited extracts |
-| | Finance / ERP | REST (OpenAPI), nightly CSV export |
-| | Virtual learning environment | Moodle web services |
-| **Vendor SaaS** (Azure Container Apps) | Application portal | REST, cursor paging, signed webhooks |
-| | Admissions feed | Daily XML transactions |
-| | Payment provider | REST, signed webhooks |
-| | Events platform | OAuth 2.0 client credentials, signed webhooks |
-| **Microsoft cloud** | CRM | Dataverse |
-| | Microsoft 365 | Microsoft Graph |
-| | Identity | Microsoft Entra ID |
+| Zone                                   | System                       | Interface                                     |
+| -------------------------------------- | ---------------------------- | --------------------------------------------- |
+| **On premises**                        | Student record system (SIS)  | SOAP 1.1 (WSDL), pipe-delimited extracts      |
+|                                        | Finance / ERP                | REST (OpenAPI), nightly CSV export            |
+|                                        | Virtual learning environment | Moodle web services                           |
+| **Vendor SaaS** (Azure Container Apps) | Application portal           | REST, cursor paging, signed webhooks          |
+|                                        | Admissions feed              | Daily XML transactions                        |
+|                                        | Payment provider             | REST, signed webhooks                         |
+|                                        | Events platform              | OAuth 2.0 client credentials, signed webhooks |
+| **Microsoft cloud**                    | CRM                          | Dataverse                                     |
+|                                        | Microsoft 365                | Microsoft Graph                               |
+|                                        | Identity                     | Microsoft Entra ID                            |
 
 Integrations run on Azure: API Management, Functions, Service Bus, Logic Apps, Data Factory, Key Vault and Application Insights. See [docs/architecture.md](docs/architecture.md) for data ownership, identifiers across systems and known data-quality issues.
 
 ## Repository structure
 
-| Path | Contents |
-| --- | --- |
-| `data-generator/` | Generates the estate's seed data (reproducible with a fixed seed) |
-| `systems/` | The simulated systems and shared components (fault injection, webhooks) |
-| `deploy/` | Bootstrap and deployment scripts |
-| `infra/` | Terraform configuration and remote state settings |
-| `docs/` | Architecture, runbooks, concepts and architecture decision records |
-| `tests/` | Unit tests |
+| Path              | Contents                                                                |
+| ----------------- | ----------------------------------------------------------------------- |
+| `data-generator/` | Generates the estate's seed data (reproducible with a fixed seed)       |
+| `systems/`        | The simulated systems and shared components (fault injection, webhooks) |
+| `deploy/`         | Bootstrap and deployment scripts                                        |
+| `infra/`          | Terraform configuration and remote state settings                       |
+| `docs/`           | Architecture, runbooks, concepts and architecture decision records      |
+| `tests/`          | Unit tests                                                              |
 
 ## Getting started
 
@@ -68,7 +68,7 @@ Student record system on `http://localhost:8081`, Finance on `http://localhost:8
 
 ### 3. Run or deploy the vendor systems
 
-Locally: `docker compose --profile vendors up -d --build`. To Azure: `./deploy/deploy-vendors.sh`. See [docs/deploy-vendor-systems.md](docs/deploy-vendor-systems.md).
+Locally: `docker compose --profile vendors up -d --build`. To Azure: Terraform in `infra/`. See [docs/deploy-vendor-systems.md](docs/deploy-vendor-systems.md).
 
 ## Delivery
 
