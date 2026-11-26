@@ -3,11 +3,14 @@ import hmac
 import json
 import logging
 import os
+import threading
 import time
 
 import azure.functions as func
 from azure.identity import DefaultAzureCredential
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
+
+logging.getLogger("azure").setLevel(logging.WARNING)
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
@@ -16,6 +19,8 @@ MAX_AGE_SECONDS = 300
 credential = DefaultAzureCredential()
 sb_client = ServiceBusClient(os.environ["SERVICEBUS_NAMESPACE"], credential)
 QUEUE = os.environ["SERVICEBUS_QUEUE"]
+sender = sb_client.get_queue_sender(QUEUE)
+send_lock = threading.Lock()
 
 def parse_signature(header: str) -> tuple[int, str] | None:
     try:
@@ -49,7 +54,7 @@ def portal_webhook(req: func.HttpRequest) -> func.HttpResponse:
         content_type="application/json",
         subject=event["type"],
     )
-    with sb_client.get_queue_sender(QUEUE) as sender:
+    with send_lock:
         sender.send_messages(message)
 
     logging.info("Queued %s %s", event["type"], event["id"])
