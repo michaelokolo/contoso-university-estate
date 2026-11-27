@@ -73,3 +73,24 @@ jobs:
 
       - name: Validate
         run: terraform validate
+
+  portal-webhook:
+    name: Test portal webhook Function
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: integrations/portal-webhook
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: 'integrations/portal-webhook/requirements*.txt'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Unit tests (pytest)
+        run: pytest -v
