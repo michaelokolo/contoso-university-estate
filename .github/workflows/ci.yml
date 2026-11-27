@@ -73,6 +73,7 @@ jobs:
 
       - name: Validate
         run: terraform validate
+
   portal-webhook:
     name: Test portal webhook Function
     runs-on: ubuntu-latest
